@@ -1,15 +1,120 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-  <meta charset="UTF-8">
-  <title>Blanche의 타로/사주 예약</title>
-</head>
-<body>
-  <h1>타로 & 사주 예약 페이지</h1>
-  <p>상담을 원하시는 분은 아래 링크를 통해 예약해 주세요.</p>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>命相談家 – 예약</title>
 
-  <a href="https://tally.so/r/your-form-id" target="_blank">예약하기</a>
-  <br><br>
-  <p>감사합니다. 좋은 하루 되세요!</p>
-</body>
+    <!-- Google Fonts 또는 원하는 웹폰트를 추가해도 좋습니다 -->
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+      }
+
+      body {
+        font-family: "Noto Sans KR", sans-serif;
+        overflow: hidden; /* 스크롤 방지 */
+      }
+
+      /* *****  배경 영상  ***** */
+      #bg-video {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* 영상이 꽉 차도록 */
+        z-index: -2; /* 가장 뒤 */
+      }
+
+      /* *****  반투명 검정 레이어  ***** */
+      #overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        z-index: -1; /* 영상보다 앞으로, 콘텐츠보다 뒤로 */
+      }
+
+      /* *****  중앙 콘텐츠  ***** */
+      #content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        color: #ffffff;
+      }
+
+      /* 2x2 그리드로 배치된 로고 텍스트 */
+      .title {
+        display: inline-grid;
+        grid-template-columns: repeat(2, auto);
+        grid-gap: 0.2em;
+        font-size: 8vw; /* 반응형 크기 */
+        line-height: 1;
+        font-weight: 700;
+        user-select: none;
+      }
+
+      /* 예약하기 버튼 */
+      .btn-reserve {
+        margin-top: 1.5rem;
+        padding: 0.8rem 2.5rem;
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #000000;
+        background: #f9d857; /* 골드 느낌의 컬러 */
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+      }
+
+      .btn-reserve:hover {
+        background: #ffd966;
+      }
+
+      @media (max-width: 768px) {
+        .title {
+          font-size: 12vw; /* 모바일에서 조금 더 크게 */
+        }
+
+        .btn-reserve {
+          font-size: 1rem;
+          padding: 0.6rem 1.8rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 배경 영상 (mp4 예시). 실제 파일 경로로 교체하세요. -->
+    <video id="bg-video" autoplay muted loop playsinline>
+      <source src="background.mp4" type="video/mp4" />
+      <!-- 브라우저 호환성을 위해 WebM 등을 추가할 수 있음 -->
+    </video>
+
+    <!-- 반투명 검정 레이어 -->
+    <div id="overlay"></div>
+
+    <!-- 중앙 콘텐츠 -->
+    <div id="content">
+      <div class="title">
+        <span>命</span>
+        <span>相</span>
+        <span>談</span>
+        <span>家</span>
+      </div>
+
+      <!-- 예약하기 버튼: 예약 페이지 링크(예: /booking)로 수정하세요. -->
+      <button class="btn-reserve" onclick="location.href='reserve.html'">
+        예약하기
+      </button>
+    </div>
+  </body>
 </html>
