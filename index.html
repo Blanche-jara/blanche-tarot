@@ -3,118 +3,100 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>命相談家 – 예약</title>
-
-    <!-- Google Fonts 또는 원하는 웹폰트를 추가해도 좋습니다 -->
+    <title>예약 – 命相談家</title>
     <style>
+      /* 기본 리셋 */
       html,
       body {
         margin: 0;
         padding: 0;
         height: 100%;
+        overflow: hidden; /* 스크롤 방지 */
       }
 
       body {
         font-family: "Noto Sans KR", sans-serif;
-        overflow: hidden; /* 스크롤 방지 */
       }
 
-      /* *****  배경 영상  ***** */
-      #bg-video {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover; /* 영상이 꽉 차도록 */
-        z-index: -2; /* 가장 뒤 */
-      }
-
-      /* *****  반투명 검정 레이어  ***** */
+      /* *****  반투명 단색 레이어  ***** */
       #overlay {
         position: fixed;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
-        background: rgba(0, 0, 0, 0.6);
-        z-index: -1; /* 영상보다 앞으로, 콘텐츠보다 뒤로 */
+        background: rgba(0, 0, 0, 0.6); /* 원하는 투명도 조절 */
+        z-index: -2;
       }
 
-      /* *****  중앙 콘텐츠  ***** */
-      #content {
+      /* *****  투명(알파 포함) 영상 레이어  ***** */
+      #bg-video {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: -1;
+        pointer-events: none; /* 버튼 클릭 방해 방지 */
+      }
+
+      /* *****  예약 버튼  ***** */
+      #btn-reserve {
         position: absolute;
-        top: 50%;
         left: 50%;
-        transform: translate(-50%, -50%);
-        text-align: center;
-        color: #ffffff;
-      }
+        bottom: 10%; /* 중앙 하단 근처: 필요시 조정 */
+        transform: translateX(-50%);
 
-      /* 2x2 그리드로 배치된 로고 텍스트 */
-      .title {
-        display: inline-grid;
-        grid-template-columns: repeat(2, auto);
-        grid-gap: 0.2em;
-        font-size: 8vw; /* 반응형 크기 */
-        line-height: 1;
-        font-weight: 700;
-        user-select: none;
-      }
+        width: 260px; /* 크기 조정 */
+        height: 70px;
 
-      /* 예약하기 버튼 */
-      .btn-reserve {
-        margin-top: 1.5rem;
-        padding: 0.8rem 2.5rem;
-        font-size: 1.2rem;
-        font-weight: 600;
-        color: #000000;
-        background: #f9d857; /* 골드 느낌의 컬러 */
         border: none;
-        border-radius: 6px;
+        border-radius: 9999px; /* pill shape */
         cursor: pointer;
-        transition: background 0.3s ease;
+
+        /* 그라데이션 배경 */
+        background: linear-gradient(135deg, #fbd14b 0%, #ff8a00 100%);
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+
+        /* 내부 텍스트 없음 -> 시각적 아이덴티티 유지 위해 투명 텍스트 */
+        color: transparent;
       }
 
-      .btn-reserve:hover {
-        background: #ffd966;
+      #btn-reserve:before {
+        /* 접근성: 스크린리더용 텍스트 */
+        content: "예약하기";
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        color: transparent; /* 시각적으로 숨김 */
+        pointer-events: none;
+      }
+
+      #btn-reserve:hover {
+        transform: translateX(-50%) scale(1.05);
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
       }
 
       @media (max-width: 768px) {
-        .title {
-          font-size: 12vw; /* 모바일에서 조금 더 크게 */
-        }
-
-        .btn-reserve {
-          font-size: 1rem;
-          padding: 0.6rem 1.8rem;
+        #btn-reserve {
+          width: 180px;
+          height: 56px;
         }
       }
     </style>
   </head>
   <body>
-    <!-- 배경 영상 (mp4 예시). 실제 파일 경로로 교체하세요. -->
-    <video id="bg-video" autoplay muted loop playsinline>
-      <source src="background.mp4" type="video/mp4" />
-      <!-- 브라우저 호환성을 위해 WebM 등을 추가할 수 있음 -->
-    </video>
-
-    <!-- 반투명 검정 레이어 -->
+    <!-- 반투명 단색 레이어 -->
     <div id="overlay"></div>
 
-    <!-- 중앙 콘텐츠 -->
-    <div id="content">
-      <div class="title">
-        <span>命</span>
-        <span>相</span>
-        <span>談</span>
-        <span>家</span>
-      </div>
+    <!-- 투명 영상 (알파 포함) - 실제 파일로 교체하세요 -->
+    <video id="bg-video" autoplay muted loop playsinline>
+      <source src="transparent-loop.mp4" type="video/mp4" />
+    </video>
 
-      <!-- 예약하기 버튼: 예약 페이지 링크(예: /booking)로 수정하세요. -->
-      <button class="btn-reserve" onclick="location.href='reserve.html'">
-        예약하기
-      </button>
-    </div>
+    <!-- 예약 버튼 (텍스트 숨김) -->
+    <button id="btn-reserve" onclick="location.href='reserve.html'"></button>
   </body>
 </html>
