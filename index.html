@@ -24,7 +24,7 @@
         background: rgba(0, 0, 0, 0.6);
         z-index: -2;
       }
-      /* Responsive full‑cover video */
+      /* Responsive full-cover video */
       #bg-video {
         position: fixed;
         top: 50%;
@@ -32,15 +32,14 @@
         transform: translate(-50%, -50%);
         width: 177.78vh; /* 100vh * 16 / 9 */
         height: 100vh;
+        object-fit: cover;
         pointer-events: none;
         z-index: -1;
-        border: 0;
       }
-      /* When viewport is wider than 16:9, swap to fit width */
       @media (min-aspect-ratio: 16/9) {
         #bg-video {
           width: 100vw;
-          height: 56.25vw; /* 100vw * 9 / 16 */
+          height: 56.25vw;
         }
       }
 
@@ -54,32 +53,22 @@
         left: 50%;
         bottom: 10%;
         transform: translateX(-50%);
-
         width: var(--btn-size);
         height: var(--btn-size);
-
         border: none;
         border-radius: 50%;
         cursor: pointer;
-
         background: linear-gradient(135deg, #fbd14b 0%, #ff8a00 100%);
         transition: transform 0.25s ease, box-shadow 0.25s ease;
-
-        color: transparent; /* visually hidden */
+        color: transparent;
       }
-
-      /* ----- Animated Gradient Ring ----- */
       #btn-reserve::before {
         content: "";
         position: absolute;
-        inset: calc(-1 * var(--ring-thickness)); /* outside the button */
+        inset: calc(-1 * var(--ring-thickness));
         border-radius: 50%;
         pointer-events: none;
-
-        /* Conic gradient for smooth colour sweep */
         background: conic-gradient(#fbd14b 0%, #ff8a00 50%, #fbd14b 100%);
-
-        /* Create hollow centre using mask */
         -webkit-mask: radial-gradient(
           circle,
           transparent calc(100% - var(--ring-thickness)),
@@ -90,16 +79,11 @@
           transparent calc(100% - var(--ring-thickness)),
           #000 calc(100% - var(--ring-thickness))
         );
-
         opacity: 0;
       }
-
       @keyframes ring-spin {
-        to {
-          transform: rotate(360deg);
-        }
+        to { transform: rotate(360deg); }
       }
-
       #btn-reserve:hover {
         transform: translateX(-50%) scale(1.05);
         box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
@@ -109,31 +93,116 @@
         animation: ring-spin 4s linear infinite;
       }
 
+      /* ===== MUSIC TOGGLE BUTTON ===== */
+      #btn-music-toggle {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 10;
+        width: 40px;
+        height: 40px;
+        border: none;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.7);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.2s ease;
+        color: red; /* 초기: OFF -> 빨간색 */
+      }
+      #btn-music-toggle:hover {
+        background: rgba(255, 255, 255, 0.9);
+      }
+      #music-icon {
+        width: 24px;
+        height: 24px;
+        fill: currentColor;
+      }
+      #btn-music-toggle.on {
+        color: black; /* ON -> 검은색 */
+      }
+      #music-credit {
+        position: fixed;
+        top: 70px;
+        right: 10px;
+        z-index: 10;
+        font-size: 12px;
+        color: white;
+      }
+
       /* ===== RESPONSIVE ===== */
       @media (max-width: 768px) {
         :root {
           --btn-size: 96px;
           --ring-thickness: 4px;
         }
+        #btn-music-toggle {
+          width: 32px;
+          height: 32px;
+          top: 16px;
+          right: 16px;
+        }
+        #music-icon {
+          width: 20px;
+          height: 20px;
+        }
+        #music-credit {
+          top: 60px;
+          right: 8px;
+        }
       }
     </style>
   </head>
   <body>
-    <!-- Dim Layer -->
     <div id="overlay"></div>
-
-    <!-- Local BG video -->
+    <!-- Background Video -->
     <video
       id="bg-video"
       src="bgloop.mp4"
-      autoplay muted loop playsinline
+      autoplay
+      muted
+      loop
+      playsinline
     ></video>
-
     <!-- Reservation Button -->
     <button
       id="btn-reserve"
       aria-label="RESERVATION"
       onclick="location.href='https://tally.so/r/mJZzNX'"
     ></button>
+    <!-- Background Music -->
+    <audio id="bg-music" src="bgmusic.mp3" loop muted></audio>
+    <!-- Music Toggle -->
+    <button id="btn-music-toggle" aria-label="음악 켜기/끄기">
+      <svg id="music-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <!-- 초기 아이콘: Chanut (OFF 상태) -->
+        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+      </svg>
+    </button>
+    <!-- Icon Credit -->
+    <div id="music-credit">
+      <a id="credit-link" href="https://www.flaticon.com/free-icons/pause" title="pause icons">
+      </a>
+    </div>
+    <script>
+      const music = document.getElementById('bg-music');
+      const toggle = document.getElementById('btn-music-toggle');
+      const icon = document.getElementById('music-icon');
+      const creditLink = document.getElementById('credit-link');
+      music.muted = true;
+      toggle.classList.remove('on');
+      toggle.addEventListener('click', () => {
+        music.muted = !music.muted;
+        if (!music.muted) {
+          music.play().catch(() => {});
+          toggle.classList.add('on');
+          icon.innerHTML = `<path d="M5 9v6h4l5 5V4L9 9H5z"/>`; // IYAHICON
+        } else {
+          toggle.classList.remove('on');
+          icon.innerHTML = `<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>`; // Chanut
+        }
+      });
+    </script>
   </body>
 </html>
