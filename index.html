@@ -24,7 +24,7 @@
         background: rgba(0, 0, 0, 0.6);
         z-index: -2;
       }
-      /* Responsive full‑cover YouTube iframe */
+      /* Responsive full‑cover video */
       #bg-video {
         position: fixed;
         top: 50%;
@@ -122,14 +122,12 @@
     <!-- Dim Layer -->
     <div id="overlay"></div>
 
-    <!-- YouTube BG video (iframe) -->
-    <iframe
+    <!-- Local BG video -->
+    <video
       id="bg-video"
-      src="https://www.youtube-nocookie.com/embed/8-yJl3VcTzQ?autoplay=1&mute=1&controls=0&loop=1&playlist=8-yJl3VcTzQ&playsinline=1&rel=0&modestbranding=1"
-      title="Background video"
-      allow="autoplay; fullscreen"
-      allowfullscreen
-    ></iframe>
+      src="bgloop.mp4"
+      autoplay muted loop playsinline
+    ></video>
 
     <!-- Reservation Button -->
     <button
